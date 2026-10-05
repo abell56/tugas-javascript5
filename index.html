@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tugas 5 JS - Manajemen Produk Toko Online</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #38bdf8;
+            --primary-hover: #0284c7;
+            --danger: #ef4444;
+            --danger-hover: #dc2626;
+            --success: #22c55e;
+            --border: #334155;
+            --terminal-bg: #030712;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 2rem 1rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+        }
+
+        header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .badge-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .badge {
+            background: #1e293b;
+            border: 1px solid var(--border);
+            padding: 0.35rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            color: #e2e8f0;
+        }
+
+        .badge span {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #f1f5f9;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.35rem;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        input {
+            width: 100%;
+            padding: 0.65rem 0.85rem;
+            background: #0f172a;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: #fff;
+            font-size: 0.95rem;
+        }
+
+        input:focus {
+            outline: 2px solid var(--primary);
+            border-color: transparent;
+        }
+
+        button {
+            cursor: pointer;
+            padding: 0.65rem 1.25rem;
+            border-radius: 6px;
+            font-weight: 600;
+            border: none;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #0f172a;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            color: #fff;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: #fff;
+        }
+
+        .btn-danger:hover {
+            background: var(--danger-hover);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: #e2e8f0;
+        }
+
+        .btn-outline:hover {
+            background: #334155;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0.5rem;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: #0f172a;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        tr:hover td {
+            background: #243248;
+        }
+
+        .terminal-box {
+            background: var(--terminal-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 0.9rem;
+            color: #38bdf8;
+            max-height: 380px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+
+        .terminal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .actions-bar {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Toko Online - Manajemen Produk</h1>
+        </header>
+
+        <div class="grid-2">
+            <!-- Form Tambah Produk -->
+            <div class="card">
+                <h2 class="card-title">Tambah Produk Baru</h2>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">
+                    Menggunakan <strong>Spread Operator</strong> (<code>...</code>) untuk menyalin dan menambah elemen array.
+                </p>
+                <form id="formTambah" onsubmit="handleFormTambah(event)">
+                    <div class="form-group">
+                        <label for="inputTambahId">ID Produk</label>
+                        <input type="number" id="inputTambahId" placeholder="Contoh: 7" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputTambahNama">Nama Produk</label>
+                        <input type="text" id="inputTambahNama" placeholder="Contoh: Mouse Wireless" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputTambahHarga">Harga Produk (Rp)</label>
+                        <input type="number" id="inputTambahHarga" placeholder="Contoh: 250000" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Tambah Produk</button>
+                </form>
+            </div>
+
+            <!-- Form Hapus Produk -->
+            <div class="card">
+                <h2 class="card-title">Hapus Produk</h2>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">
+                    Menggunakan <strong>Rest Parameter</strong> (<code>...id</code>) untuk menerima satu atau lebih ID sekaligus.
+                </p>
+                <form id="formHapus" onsubmit="handleFormHapus(event)">
+                    <div class="form-group">
+                        <label for="inputHapusId">ID Produk yang Ingin Dihapus</label>
+                        <input type="text" id="inputHapusId" placeholder="Contoh: 1 atau 1, 4" required>
+                        <small style="color: var(--text-muted); font-size: 0.75rem;">Bisa masukkan beberapa ID dipisahkan koma</small>
+                    </div>
+                    <button type="submit" class="btn-danger">Hapus Produk</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tabel Daftar Produk -->
+        <div class="card">
+            <h2 class="card-title">Daftar Produk Tersedia</h2>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nama Produk</th>
+                            <th>Harga</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelProdukBody">
+                        <!-- Render via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Terminal Output -->
+        <div class="card">
+            <div class="terminal-header">
+                <span>TERMINAL CONSOLE OUTPUT</span>
+                <span>JavaScript Console</span>
+            </div>
+            <div class="terminal-box" id="terminalOutput"></div>
+        </div>
+    </div>
+
+    <!-- Script Utama sesuai instruksi tugas -->
+    <script src="tugas5.js"></script>
+
+    <!-- Script integrasi UI -->
+    <script>
+        // Tangkap console.log ke terminal box di layar
+        const terminalEl = document.getElementById("terminalOutput");
+        const logAsli = console.log;
+
+        function logKeTerminal(pesan) {
+            logAsli(pesan);
+            terminalEl.textContent += pesan + "\n";
+            terminalEl.scrollTop = terminalEl.scrollHeight;
+        }
+        console.log = logKeTerminal;
+
+        function bersihkanTerminal() {
+            terminalEl.textContent = "";
+        }
+
+        // Tampilkan produk ke tabel HTML dengan Destructuring
+        function tampilkanProdukKeUI() {
+            const tbody = document.getElementById("tabelProdukBody");
+            tbody.innerHTML = "";
+
+            if (produkList.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: var(--text-muted);">Tidak ada produk di katalog.</td></tr>`;
+                return;
+            }
+
+            // Pastikan produk selalu terurut berdasarkan ID
+            produkList.sort((a, b) => a.id - b.id);
+
+            produkList.forEach(produk => {
+                // Destructuring object produk
+                const { id, nama, harga } = produk;
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td><strong>#${id}</strong></td>
+                    <td>${nama}</td>
+                    <td>Rp ${harga.toLocaleString('id-ID')}</td>
+                    <td>
+                        <button class="btn-danger" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;" onclick="hapusDariTabel(${id})">Hapus</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function handleFormTambah(e) {
+            e.preventDefault();
+            const id = parseInt(document.getElementById("inputTambahId").value);
+            const nama = document.getElementById("inputTambahNama").value.trim();
+            const harga = parseInt(document.getElementById("inputTambahHarga").value);
+
+            if (id && nama && !isNaN(harga)) {
+                tambahProduk(id, nama, harga);
+                tampilkanProduk();
+                tampilkanProdukKeUI();
+                e.target.reset();
+            }
+        }
+
+        function handleFormHapus(e) {
+            e.preventDefault();
+            const inputVal = document.getElementById("inputHapusId").value.trim();
+            const ids = inputVal.split(",").map(val => parseInt(val.trim())).filter(val => !isNaN(val));
+
+            if (ids.length > 0) {
+                hapusProduk(...ids);
+                tampilkanProduk();
+                tampilkanProdukKeUI();
+                e.target.reset();
+            }
+        }
+
+        function hapusDariTabel(id) {
+            hapusProduk(id);
+            tampilkanProduk();
+            tampilkanProdukKeUI();
+        }
+
+        function jalankanSimulasiPDF() {
+            logKeTerminal("\n>>> Menjalankan Uji Alur Sesuai Contoh PDF <<<\n");
+            tampilkanProduk();
+            console.log("// contoh penambahan data: tambahProduk(3, 'Tablet', 7000000)");
+            tambahProduk(3, "Tablet", 7000000);
+            tampilkanProduk();
+            console.log("// contoh penghapusan data: hapusProduk(2)");
+            hapusProduk(2);
+            tampilkanProduk();
+            tampilkanProdukKeUI();
+        }
+
+        // Tampilkan produk ke tabel saat pertama kali dibuka
+        window.addEventListener("DOMContentLoaded", () => {
+            tampilkanProdukKeUI();
+        });
+    </script>
+</body>
+</html>
