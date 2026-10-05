@@ -128,7 +128,15 @@ Jalankan perintah berikut di terminal:
 ```bash
 node tugas5.js
 ```
-atau
-```bash
-node index.js
-```
+
+---
+
+## Screenshot
+
+**Tampilan Form Tambah & Hapus Produk**
+
+![Screenshot Form](./screenshot1.png)
+
+**Tampilan Tabel Produk & Terminal Console Output**
+
+![Screenshot Tabel dan Terminal](./screenshot2.png)
